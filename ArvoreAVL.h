@@ -163,7 +163,7 @@ void AplicarRotacao(NodeArvorePtr **arvore){
     int bar = altura(&(*arvore)->direita) - altura(&(*arvore)->esquerda);
     if(bar >= 2 || bar <= -2)
         if(bar < 0)
-            if(altura(&(*arvore)->esquerda->esquerda) > altura(&(*arvore)->esquerda->direita))
+            if(altura(&(*arvore)->esquerda->esquerda) >= altura(&(*arvore)->esquerda->direita))
                 rotacaoDireitaSimples(arvore);
             else
                 rotacaoDireitaDupla(arvore);

@@ -113,11 +113,14 @@ bool removeItem(NodeArvorePtr **arvore, int chave){
 
     else if((*arvore)->elemento == chave){
         NodeArvore *aux = (*arvore);
-
-        if((*arvore)->esquerda == NULL)
+        
+        if((*arvore)->direita == NULL && (*arvore)->esquerda == NULL)
+            (*arvore) = NULL;
+        
+        else if((*arvore)->esquerda == NULL)
             (*arvore) = (*arvore)->direita;
-
-        if((*arvore)->direita == NULL)
+        
+        else if((*arvore)->direita == NULL)
             (*arvore) = (*arvore)->esquerda; 
 
         else{

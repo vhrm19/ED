@@ -107,6 +107,7 @@ NodeArvorePtr* getMaxAux(NodeArvorePtr **arvore){
 }
 
 bool removeItem(NodeArvorePtr **arvore, int chave){
+    bool aux2;
     if((*arvore) == NULL)
         return false;
 
@@ -119,21 +120,23 @@ bool removeItem(NodeArvorePtr **arvore, int chave){
         if((*arvore)->direita == NULL)
             (*arvore) = (*arvore)->esquerda; 
 
-        if((*arvore)->direita == NULL && (*arvore)->esquerda == NULL)
-            (*arvore) = NULL;
-
         else{
             (*arvore) = getMaxAux(&(*arvore)->esquerda);
             (*arvore)->direita = aux->direita;
         }
-        atualizaAltura(arvore);
         free(aux);
         return true;
     }
     else if((*arvore)->elemento > chave)
-        return removeItem(&(*arvore)->esquerda, chave);
+        aux2 = removeItem(&(*arvore)->esquerda, chave);
     else
-        return removeItem(&(*arvore)->direita, chave);
+        aux2 = removeItem(&(*arvore)->direita, chave);
+    if(aux2){
+        AplicarRotacao(arvore);
+        atualizaAltura(arvore);
+        return true;
+    }
+    else return false;
 }
 
 int altura(NodeArvorePtr **arvore){  
@@ -161,7 +164,7 @@ void atualizaAltura(NodeArvorePtr **arvore){
 
 void AplicarRotacao(NodeArvorePtr **arvore){
     int bar = altura(&(*arvore)->direita) - altura(&(*arvore)->esquerda);
-    if(bar >= 2 || bar <= -2)
+    if(abs(bar) > 1)
         if(bar < 0)
             if(altura(&(*arvore)->esquerda->esquerda) >= altura(&(*arvore)->esquerda->direita))
                 rotacaoDireitaSimples(arvore);
